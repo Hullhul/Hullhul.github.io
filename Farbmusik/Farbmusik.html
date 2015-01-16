@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Farben und Musik</h1>
+<p> Version 0.2 von DRM</p>
+
+<br>
+<p id="p1"> Tipp: Mit F11 können Sie im Firefox zwischen Vollbild- und Fenstermodus wechseln.</p>
+<br>
+<input type="button" id="btnColChange" value="Farben aktivieren" onclick=funcColChngClicked()>
+<br>
+<br>
+<input type="button" id="btnSound" value="Töne aktivieren" onclick=funcSoundClicked()>
+<br>
+<form>
+  <select id="dd_SoundMode" onChange="varSoundMode=this.selectedIndex">
+  </select>
+</form>
+<br>
+<p id="p2"> </p>
+<p id="p3"> </p>
+
+<script src="js/timbre.js"> </script>
+<script src="js/songs.js"> </script>
+
+<script>
+var varMinFreq=200; //Hz
+var varMaxFreq=1000; //Hz
+var varcolChng = false; //button "Farben" clicked or not
+var varSound = false; //button "Töne" clicked or not
+var varkeydown=false; //to mark that the key was pressed down; e.g. prevent multiple events on holding the key...
+var sin=T("sin"); //sinus timbre object
+var numKeyStrokes=0; //number of pressed keys
+var varSoundMode=0; //random sound or songs
+
+// Get dropdown element from DOM
+
+var dropdown = document.getElementById("dd_SoundMode");
+for (var ii=0; ii < Object.keys(song).length; ii++){
+  dropdown[dropdown.length]=new Option(Object.keys(song)[ii]);
+}
+
+document.onkeydown = keydownFunc;
+document.onkeyup = keyupFunc;
+document.getElementById("dd_SoundMode").options[0].selected=true;
+
+function keydownFunc(event){
+  //reads the keycode and should working with different browsers
+  if (!event)
+    event = window.event;
+  if (event.which) {
+    varkeyCode = event.which;
+  } else if (event.keyCode) {
+    varkeyCode = event.keyCode;
+  }
+  //the "keydown-event"  should not be passed to the browser
+  if (varSound||varcolChng){
+    event.cancelBubble = true;
+    event.returnValue = false;
+  }
+  
+  if (varkeydown==false){
+    if (varcolChng == true) {
+      document.bgColor = getRandomColor();
+    };
+  
+    if (varSound == true) {
+      //playRandomSound();
+      playSong(Object.keys(song)[varSoundMode],numKeyStrokes)
+      numKeyStrokes+=1;
+    };
+    varkeydown=true;
+  };
+
+  return event.returnValue;
+}
+
+function keyupFunc(event){
+  //reads the keycode and should working with different browsers
+  if (!event)
+    event = window.event;
+  if (event.which) {
+    varkeyCode = event.which;
+  } else if (event.keyCode) {
+    varkeyCode = event.keyCode;
+  }
+  //the "keyup-event"  should not be passed to the browser
+  event.cancelBubble = true;
+  event.returnValue = false;
+  
+  //if (varcolChng == true) {
+  //  document.bgColor = getRandomColor();
+  //};
+
+  if (varSound == true) {
+    sin.pause();
+  };
+  varkeydown=false;
+
+  return event.returnValue;
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function playBing(){
+  T("perc", {r:500}, sin).on("ended", function() {this.pause();}).bang().play();
+}
+
+function funcChngTxt(x){
+  if (x==0){
+    document.getElementById("p2").innerHTML="Drücken Sie eine beliebige Taste.";
+  } else {
+    document.getElementById("p2").innerHTML="";
+  }
+}
+
+function funcColChngClicked() {
+  if (varcolChng==false) {
+    varcolChng=true;
+    document.getElementById("btnColChange").value="Farben deaktivieren";
+    funcChngTxt(0);
+  } else {
+    varcolChng=false;
+    document.getElementById("btnColChange").value="Farben aktivieren";
+    document.bgColor="White";
+    if (varSound==false){
+      funcChngTxt(1);
+    };
+  }
+}
+
+function funcSoundClicked() {
+  if (varSound==false) {
+    varSound=true;
+    document.getElementById("btnSound").value="Töne deaktivieren";
+    funcChngTxt(0);
+  } else {
+    varSound=false;
+    document.getElementById("btnSound").value="Töne aktivieren";
+    numKeyStrokes=0;
+    if (varcolChng==false){
+      funcChngTxt(1);
+    };
+  }
+}
+
+</script>
+</body>
+</html> 
