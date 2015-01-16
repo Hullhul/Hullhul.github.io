@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <meta charset="UTF-8">
+</head>
 <body>
 
 <h1>Farben und Musik</h1>
 <p> Version 0.2 von DRM</p>
 
 <br>
-<p id="p1"> Tipp: Mit F11 können Sie im Firefox zwischen Vollbild- und Fenstermodus wechseln.</p>
+<p id="p1"> Tipp: Mit F11 kÃ¶nnen Sie im Firefox zwischen Vollbild- und Fenstermodus wechseln.</p>
 <br>
 <input type="button" id="btnColChange" value="Farben aktivieren" onclick=funcColChngClicked()>
 <br>
 <br>
-<input type="button" id="btnSound" value="Töne aktivieren" onclick=funcSoundClicked()>
+<input type="button" id="btnSound" value="TÃ¶ne aktivieren" onclick=funcSoundClicked()>
 <br>
 <form>
   <select id="dd_SoundMode" onChange="varSoundMode=this.selectedIndex">
@@ -28,7 +31,7 @@
 var varMinFreq=200; //Hz
 var varMaxFreq=1000; //Hz
 var varcolChng = false; //button "Farben" clicked or not
-var varSound = false; //button "Töne" clicked or not
+var varSound = false; //button "TÃ¶ne" clicked or not
 var varkeydown=false; //to mark that the key was pressed down; e.g. prevent multiple events on holding the key...
 var sin=T("sin"); //sinus timbre object
 var numKeyStrokes=0; //number of pressed keys
@@ -116,7 +119,7 @@ function playBing(){
 
 function funcChngTxt(x){
   if (x==0){
-    document.getElementById("p2").innerHTML="Drücken Sie eine beliebige Taste.";
+    document.getElementById("p2").innerHTML="DrÃ¼cken Sie eine beliebige Taste.";
   } else {
     document.getElementById("p2").innerHTML="";
   }
@@ -140,11 +143,11 @@ function funcColChngClicked() {
 function funcSoundClicked() {
   if (varSound==false) {
     varSound=true;
-    document.getElementById("btnSound").value="Töne deaktivieren";
+    document.getElementById("btnSound").value="TÃ¶ne deaktivieren";
     funcChngTxt(0);
   } else {
     varSound=false;
-    document.getElementById("btnSound").value="Töne aktivieren";
+    document.getElementById("btnSound").value="TÃ¶ne aktivieren";
     numKeyStrokes=0;
     if (varcolChng==false){
       funcChngTxt(1);
