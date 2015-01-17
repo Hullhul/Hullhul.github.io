@@ -70,7 +70,8 @@ function keydownFunc(event){
   
     if (varSound == true) {
       //playRandomSound();
-      playSong(Object.keys(song)[varSoundMode],numKeyStrokes)
+      playSong(Object.keys(song)[varSoundMode],numKeyStrokes);
+      markNote(Object.keys(song)[varSoundMode],numKeyStrokes);
       numKeyStrokes+=1;
     };
     varkeydown=true;

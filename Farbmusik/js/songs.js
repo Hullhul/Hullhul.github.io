@@ -85,25 +85,34 @@ function getFrequencyFromNote(note){
 function playSong(key,keystrokenumber){
   var noteString, currentnote;
   noteString=song[key];
-  currentnote=getcurrentNote(noteString,keystrokenumber);
-  document.getElementById("p2").innerHTML=noteString;
+  currentnote=getcurrentNote(noteString,keystrokenumber)[1];
   sin.set({freq:getFrequencyFromNote(currentnote)});
   playBing();
 }
 
+function markNote(key,keystrokenumber){
+  var noteString;
+  var noteStringArray;
+  noteString=song[key];
+  noteStringArrary=getcurrentNote(noteString,keystrokenumber);
+  document.getElementById("p2").innerHTML=noteStringArrary[0]+"<span style='font-size:30px;'><span style='color:#FF0000;'>"+noteStringArrary[1]+"</span></span>"+noteStringArrary[2];
+}
+
 function getcurrentNote(noteString,keystrokenumber){
-  var stringslice;
   var modkeystrokenum;
   var IndexOfNote, IndexOfNextNote;
+  var returnstring = new Array(3);
   
   modkeystrokenum=keystrokenumber%getNumOfNotes(noteString);
 
   IndexOfNote=getIndexOfNote(noteString,modkeystrokenum);
   IndexOfNextNote=getIndexOfNote(noteString,modkeystrokenum+1);
 
-  stringslice=noteString.slice(IndexOfNote,IndexOfNextNote);
+  returnstring[0]=noteString.slice(0,IndexOfNote);
+  returnstring[1]=noteString.slice(IndexOfNote,IndexOfNextNote);
+  returnstring[2]=noteString.slice(IndexOfNextNote);
 
-  return stringslice;
+  return returnstring;
 }
 
 function getIndexOfNote(string,number){
